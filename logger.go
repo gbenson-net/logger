@@ -57,8 +57,9 @@ func (o *Options) level() string {
 	return DefaultLevel
 }
 
-// Ctx returns the Logger associated with the given context. Returns
-// an appropriate (non-nil) default if ctx has no associated logger.
+// Ctx returns the Logger associated with the given context, or
+// an appropriate (non-nil) default if the given context has no
+// logger associated.
 func Ctx(ctx context.Context) *Logger {
 	if ctx == nil {
 		panic("nil context")
@@ -67,7 +68,7 @@ func Ctx(ctx context.Context) *Logger {
 	return zerolog.Ctx(ctx)
 }
 
-// LevelFor returns the appropriate level for logging the given error.
+// LevelFor returns an appropriate level to log the given error at.
 func LevelFor(err error) Level {
 	if IsRecoveredPanicError(err) {
 		return zerolog.PanicLevel

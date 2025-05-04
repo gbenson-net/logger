@@ -2,7 +2,7 @@ package logger
 
 import "fmt"
 
-// A panic which was recovered.
+// RecoveredPanicError represents a panic which has been recovered.
 type RecoveredPanicError interface {
 	error
 	RecoveredPanicError() // no-op function to distinguish from other errors.
