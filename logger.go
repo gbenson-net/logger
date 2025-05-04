@@ -1,4 +1,4 @@
-// Package logger provides logging for Hive libraries and services.
+// Package logger provides a thin wrapper around [zerolog].
 package logger
 
 import (
@@ -67,7 +67,7 @@ func Ctx(ctx context.Context) *Logger {
 	return zerolog.Ctx(ctx)
 }
 
-// Return the appropriate level for the given error.
+// LevelFor returns the appropriate level for logging the given error.
 func LevelFor(err error) Level {
 	if IsRecoveredPanicError(err) {
 		return zerolog.PanicLevel
