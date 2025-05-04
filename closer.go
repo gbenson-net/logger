@@ -14,7 +14,7 @@ func LoggedClose(log *Logger, c io.Closer, noun string, verb ...string) {
 
 	defer func() {
 		if err := c.Close(); err != nil {
-			log.Err(err).Msg(doing)
+			log.WithLevel(LevelFor(err)).Err(err).Msg(doing)
 		} else {
 			log.Debug().Msg(done)
 		}
