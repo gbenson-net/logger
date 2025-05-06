@@ -1,10 +1,12 @@
 all: build
 
-.PHONY: build check test
+.PHONY: build check lint test
 
 check: test
 
-test:
+lint:
 	gofmt -w .
-	go vet .
-	go test -v -coverprofile=coverage.out .
+	go vet ./...
+
+test: lint
+	go test -v -coverprofile=coverage.out ./...
