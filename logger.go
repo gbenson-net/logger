@@ -68,6 +68,32 @@ func Ctx(ctx context.Context) *Logger {
 	return zerolog.Ctx(ctx)
 }
 
+// Contexter is the subset of [testing.T] et al used by TestCtx.
+type Contexter interface {
+	Context() context.Context
+}
+
+// TestCtx returns its receiver's context after associating a logger
+// at debug level with it.  It is intended for use with [testing.T]
+// et al, for example:
+//
+//	package pkg
+//
+//	import (
+//		"testing"
+//		"gbenson.net/go/logger"
+//	)
+//
+//	func TestSomething(t *testing.T) {
+//		ctx := logger.TestCtx(t)
+//		// ...
+//		logger.Ctx(ctx).Info().Msg("something happened")
+//	}
+func TestCtx(t Contexter) context.Context {
+	log := New(&Options{Level: "Debug"})
+	return log.WithContext(t.Context())
+}
+
 // LevelFor returns an appropriate level to log the given error at.
 func LevelFor(err error) Level {
 	if IsRecoveredPanicError(err) {
