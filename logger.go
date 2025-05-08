@@ -73,9 +73,9 @@ type Contexter interface {
 	Context() context.Context
 }
 
-// TestCtx returns its receiver's context after associating a logger
-// at debug level with it.  It is intended for use with [testing.T]
-// et al, for example:
+// TestContext returns its receiver's context after associating a
+// logger with it.  It is intended for use with [testing.T] et al,
+// for example:
 //
 //	package pkg
 //
@@ -89,6 +89,15 @@ type Contexter interface {
 //		// ...
 //		logger.Ctx(ctx).Info().Msg("something happened")
 //	}
+func TestContext(t Contexter) context.Context {
+	log := New(nil)
+	return log.WithContext(t.Context())
+}
+
+// TestCtx returns its receiver's context after associating a logger
+// at debug level with it.
+//
+// Deprecated: Use [TestContext] instead.
 func TestCtx(t Contexter) context.Context {
 	log := New(&Options{Level: "Debug"})
 	return log.WithContext(t.Context())
