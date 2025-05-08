@@ -24,7 +24,7 @@ type Options struct {
 // New creates a new logger.
 func New(options *Options) Logger {
 	if options == nil {
-		panic("nil options")
+		options = &Options{}
 	}
 
 	writer := options.Writer
