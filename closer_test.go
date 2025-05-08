@@ -1,6 +1,10 @@
 package logger
 
-import "testing"
+import (
+	"testing"
+
+	"gotest.tools/v3/assert"
+)
 
 func TestNounVerbToDoingDone(t *testing.T) {
 	for _, tc := range []struct {
@@ -14,16 +18,8 @@ func TestNounVerbToDoingDone(t *testing.T) {
 	} {
 		t.Run(tc.doing, func(t *testing.T) {
 			doing, done := nounVerbToDoingDone(tc.noun, tc.verb)
-			expect(t, doing, tc.doing)
-			expect(t, done, tc.done)
+			assert.Check(t, doing == tc.doing, doing)
+			assert.Check(t, done == tc.done, done)
 		})
 	}
-}
-
-func expect[T comparable](t *testing.T, got, want T) {
-	t.Helper()
-	if got == want {
-		return
-	}
-	t.Errorf("want: %v, got: %v", want, got)
 }
