@@ -6,10 +6,15 @@ import (
 	"io"
 	"os"
 
+	"golang.org/x/term"
+
 	"github.com/rs/zerolog"
 )
 
-var DefaultLevel = zerolog.LevelInfoValue
+var (
+	DefaultLevel     = zerolog.LevelInfoValue
+	NewConsoleWriter = zerolog.NewConsoleWriter
+)
 
 type (
 	Level  = zerolog.Level
@@ -27,11 +32,7 @@ func New(options *Options) Logger {
 		options = &Options{}
 	}
 
-	writer := options.Writer
-	if writer == nil {
-		writer = zerolog.NewConsoleWriter()
-	}
-	log := zerolog.New(writer)
+	log := zerolog.New(options.writer())
 
 	level, err := zerolog.ParseLevel(options.level())
 	if err != nil {
@@ -55,6 +56,16 @@ func (o *Options) level() string {
 		return s
 	}
 	return DefaultLevel
+}
+
+func (o *Options) writer() io.Writer {
+	if w := o.Writer; w != nil {
+		return w // caller supplied
+	}
+	if term.IsTerminal(int(os.Stdout.Fd())) {
+		return NewConsoleWriter() // pretty
+	}
+	return os.Stdout // raw JSON
 }
 
 // Ctx returns the Logger associated with the given context, or
