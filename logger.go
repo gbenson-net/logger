@@ -17,9 +17,10 @@ var (
 )
 
 type (
-	Level  = zerolog.Level
-	Logger = zerolog.Logger
-	Event  = zerolog.Event
+	Context = zerolog.Context
+	Level   = zerolog.Level
+	Logger  = zerolog.Logger
+	Event   = zerolog.Event
 )
 
 type Options struct {
