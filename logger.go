@@ -24,8 +24,9 @@ type (
 )
 
 type Options struct {
-	Writer io.Writer
-	Level  string
+	Writer    io.Writer
+	Level     string
+	Timestamp bool
 }
 
 // New creates a new logger.
@@ -42,6 +43,10 @@ func New(options *Options) Logger {
 	}
 	if level != zerolog.NoLevel {
 		log = log.Level(level)
+	}
+
+	if options.Timestamp {
+		log = log.With().Timestamp().Logger()
 	}
 
 	return log
