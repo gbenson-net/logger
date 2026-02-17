@@ -10,8 +10,12 @@ import (
 
 type Logger = logger.Logger
 
+var DefaultLoggerOptions = &logger.Options{
+	Timestamp: true,
+}
+
 var defaultLogger = sync.OnceValue(func() *Logger {
-	l := logger.New(nil)
+	l := logger.New(DefaultLoggerOptions)
 	return &l
 })
 
