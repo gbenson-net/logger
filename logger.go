@@ -5,6 +5,7 @@ import (
 	"context"
 	"io"
 	"os"
+	"time"
 
 	"golang.org/x/term"
 
@@ -12,8 +13,8 @@ import (
 )
 
 var (
-	DefaultLevel     = zerolog.LevelInfoValue
-	NewConsoleWriter = zerolog.NewConsoleWriter
+	DefaultLevel      = zerolog.LevelInfoValue
+	DefaultTimeFormat = time.TimeOnly + ".000000"
 )
 
 type (
@@ -78,6 +79,19 @@ func (o *Options) writer() io.Writer {
 		return NewConsoleWriter() // pretty
 	}
 	return os.Stdout // raw JSON
+}
+
+var defaultConsoleWriterOptions = []func(w *zerolog.ConsoleWriter){
+	func(w *zerolog.ConsoleWriter) {
+		w.TimeFormat = DefaultTimeFormat
+	},
+}
+
+// NewConsoleWriter creates and initializes a new [zerolog.ConsoleWriter].
+// Deprecated: Use [zerolog.NewConsoleWriter] instead.
+func NewConsoleWriter(options ...func(w *zerolog.ConsoleWriter)) zerolog.ConsoleWriter {
+	options = append(defaultConsoleWriterOptions, options...)
+	return zerolog.NewConsoleWriter(options...)
 }
 
 // Ctx returns the Logger associated with the given context, or
