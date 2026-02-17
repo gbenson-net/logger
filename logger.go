@@ -29,6 +29,11 @@ type Options struct {
 	Timestamp bool
 }
 
+func init() {
+	// Serialize time fields as Unix timestamp integers in nanoseconds.
+	zerolog.TimeFieldFormat = zerolog.TimeFormatUnixNano
+}
+
 // New creates a new logger.
 func New(options *Options) Logger {
 	if options == nil {
