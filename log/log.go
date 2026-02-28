@@ -60,6 +60,13 @@ func Err(err error) *logger.Event {
 	return defaultLogger().Err(err)
 }
 
+// Panic starts a new message with panic level. The resulting event's
+// Msg method will call the panic() function when invoked, stopping
+// the ordinary flow of the calling goroutine.
+func Panic() *logger.Event {
+	return defaultLogger().Panic()
+}
+
 // WarnErr starts a new message with warn level with err as a field
 // if not nil, or with info level if err is nil.
 func WarnErr(err error) *logger.Event {
