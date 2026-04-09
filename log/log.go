@@ -19,6 +19,11 @@ var defaultLogger = sync.OnceValue(func() *Logger {
 	return &l
 })
 
+// DefaultWriter returns the global default writer.
+func DefaultWriter() io.Writer {
+	return logger.DefaultWriter()
+}
+
 // DefaultLogger returns the global default logger.
 func DefaultLogger() *Logger {
 	return defaultLogger()

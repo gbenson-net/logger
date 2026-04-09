@@ -79,8 +79,12 @@ func (o *Options) writer() io.Writer {
 	return DefaultWriter()
 }
 
-// DefaultLogger returns the global default writer.
-var DefaultWriter = sync.OnceValue(func() io.Writer {
+// DefaultWriter returns the global default writer.
+func DefaultWriter() io.Writer {
+	return defaultWriter()
+}
+
+var defaultWriter = sync.OnceValue(func() io.Writer {
 	if term.IsTerminal(int(os.Stdout.Fd())) {
 		return NewConsoleWriter() // pretty
 	}
