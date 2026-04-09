@@ -5,6 +5,7 @@ import (
 	"context"
 	"io"
 	"os"
+	"sync"
 	"time"
 
 	"golang.org/x/term"
@@ -75,11 +76,16 @@ func (o *Options) writer() io.Writer {
 	if w := o.Writer; w != nil {
 		return w // caller supplied
 	}
+	return DefaultWriter()
+}
+
+// DefaultLogger returns the global default writer.
+var DefaultWriter = sync.OnceValue(func() io.Writer {
 	if term.IsTerminal(int(os.Stdout.Fd())) {
 		return NewConsoleWriter() // pretty
 	}
 	return os.Stdout // raw JSON
-}
+})
 
 var defaultConsoleWriterOptions = []func(w *zerolog.ConsoleWriter){
 	func(w *zerolog.ConsoleWriter) {
